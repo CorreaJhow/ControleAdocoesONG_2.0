@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32804.467
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OngAdocoes2.0", "OngAdocoes2.0\OngAdocoes2.0.csproj", "{92B90BE0-32D7-4D50-8445-FBAB9F5B015F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{92B90BE0-32D7-4D50-8445-FBAB9F5B015F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92B90BE0-32D7-4D50-8445-FBAB9F5B015F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92B90BE0-32D7-4D50-8445-FBAB9F5B015F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92B90BE0-32D7-4D50-8445-FBAB9F5B015F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D763186-BC4F-451F-A9B8-89DFD8F1EFF4}
+	EndGlobalSection
+EndGlobal

@@ -8,6 +8,7 @@ namespace OngAdocoes2._0
 {
     internal class Pessoa
     {
+        #region Propriedades
         public string Nome { get; set; }
         public string CPF { get; set; }
         public string Sexo { get; set; }
@@ -18,6 +19,7 @@ namespace OngAdocoes2._0
         public string Cidade { get; set; }
         public string SiglaEstado { get; set; }
         public string Numero { get; set; }
+        #endregion
         public Pessoa()
         {
 

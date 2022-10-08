@@ -1,13 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace OngAdocoes2._0
 {
     internal class Animal
     {
+        #region Strings conexao
+        public readonly static string INSERT = "INSERT INTO Animal (CHIP, Familia, Raca, Sexo, Nome) values (@CHIP, @familia, @raca, @sexo, @nome);";
+        public readonly static string SELECT = "Select CHIP, Familia, Raca, Sexo, Nome from Animal;";
+        public readonly static string DELETE = "Delete from Animal where CHIP = @chip;";
+        //gerar update variavel de acordo com o que mudar!
+        #endregion
+
         #region Propriedades
         public int Chip { get; set; }
         public string Familia { get; set; }
@@ -35,7 +40,6 @@ namespace OngAdocoes2._0
             Sexo = sexo;
             Nome = "SemNome";
         }
-
         public Animal CadastroAnimal()
         {
             int chip = NumeroRandom();

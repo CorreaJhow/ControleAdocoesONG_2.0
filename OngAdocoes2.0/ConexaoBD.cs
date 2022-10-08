@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace OngAdocoes2._0
 {
@@ -14,5 +15,8 @@ namespace OngAdocoes2._0
         {
             _conexao = "Data Source=localhost; Initial Catalog=ONG_Adocoes; User Id=sa; Password=12345;";
         }
+
+
+        
     }
 }

@@ -1,13 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OngAdocoes2._0
 {
     internal class Pessoa
     {
+        #region Strings da classe
+        public readonly static string SELECT = "Select Nome, CPF, Sexo, DataNascimento, Telefone, Rua, Bairro, Cidade, SiglaEstado, Numero from Pessoa";
+        public readonly static string DELETE = "Delete from Pessoa where CPF = @cpf";
+        public readonly static string INSERT = "INSERT INTO PESSOA (Nome, CPF, Sexo, DataNascimento, Telefone, Rua, Bairro, Cidade, SiglaEstado, Numero) " +
+            "values (@nome, @cpf, @sexo, @dataNascimento, @telefone, @rua, @bairro, @cidade, @siglaEstado, @Numero);";
+        //gerar gerar um update (dependendo da informação).
+        #endregion
+
         #region Propriedades
         public string Nome { get; set; }
         public string CPF { get; set; }

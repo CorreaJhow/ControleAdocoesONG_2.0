@@ -8,6 +8,8 @@ using Dapper;
 using MySqlX.XDevAPI.Common;
 using OngAdocoes2._0.DataBase;
 using OngAdocoes2._0.Model;
+using OngAdocoes2._0.Service;
+using Org.BouncyCastle.Asn1.Ess;
 
 namespace OngAdocoes2._0.Repository
 {
@@ -58,23 +60,21 @@ namespace OngAdocoes2._0.Repository
         {
             throw new NotImplementedException();
         }
-
-        //public bool Exists(string cpf)
-        //{
-        //    bool existe = false;
-        //    using (var db = new sqlconnection(conn))
-        //    {
-        //        db.open();
-        //        var result = db.executescalar(pessoa.exists, new { cpf = cpf }); criar exist
-        //        if (result != null)
-        //        {
-        //            existe = true;
-        //            return existe;
-        //        }
-        //    }
-        //    return existe;
-        //}
-
+        public bool Exists(string cpf) 
+        {
+            bool existe = false;
+            using (var db = new SqlConnection(conn))
+            {
+                db.Open();
+                var result = db.ExecuteScalar(Pessoa.EXIST, new { cpf = cpf });
+                if (result != null)
+                {
+                    existe = true;
+                    return existe;
+                }
+            }
+            return existe;
+        }
         public bool Insert(Pessoa pessoa)
         {
             bool result = false;
@@ -85,41 +85,48 @@ namespace OngAdocoes2._0.Repository
                 result = true;
             }
             return result;
-        } 
-
-        public void SelectAll(string cpf)
+        }  
+        public List<Pessoa> SelectAll()
         {
-            throw new NotImplementedException();
+           using(var db = new SqlConnection(conn))
+            {
+                db.Open();
+                var pessoas = db.Query<Pessoa>(Pessoa.SELECT);
+                return (List<Pessoa>)pessoas;
+            }
         }
-
-        public void SelectOne(string cpf)
+        public void UpdateEndereco(string logradouro, string bairro, string cidade, string siglaEstado, string numero, string cpf)
         {
-            throw new NotImplementedException();
+            using (var db = new SqlConnection(conn))
+            {
+                db.Open();
+                db.Execute(Pessoa.UPDATEENDERECO, new { logradouro = logradouro, bairro = bairro, cidade = cidade,
+                    siglaEstado = siglaEstado, numero = numero, CPF = cpf });
+            }
         }
-
-        public void UpdateDataNascimento(DateTime DataNascimento, string cpf)
+        public void UpdateNome(string nome, string cpf) 
         {
-            throw new NotImplementedException();
+            using (var db = new SqlConnection(conn))
+            {
+                db.Open();
+                db.Execute(Pessoa.UPDATENOME, new { nome = nome, CPF = cpf });
+            }
+        }  //ok
+        public void UpdateSexo(string sexo, string cpf) 
+        {
+            using (var db = new SqlConnection(conn))
+            {
+                db.Open();
+                db.Execute(Pessoa.UPDATESEXO, new { sexo = sexo, CPF = cpf });
+            }
         }
-
-        public void UpdateEndereco(string logradouro, string bairro, string cidade, string siglaEstado, string numero)
+        public void UpdateTelefone(string telefone, string cpf) 
         {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateNome(string nome, string cpf)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateTelefone(string telefone, string cpf)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Exists(string cpf)
-        {
-            throw new NotImplementedException();
+            using (var db = new SqlConnection(conn))
+            {
+                db.Open();
+                db.Execute(Pessoa.UPDATETELEFONE, new { telefone = telefone, CPF = cpf });
+            }
         }
     }
 }

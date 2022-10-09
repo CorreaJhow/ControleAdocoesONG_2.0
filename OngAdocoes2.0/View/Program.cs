@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using OngAdocoes2._0.DataBase;
 using OngAdocoes2._0.Model;
@@ -109,61 +110,78 @@ namespace OngAdocoes2._0.View
                                     Console.Clear();
                                     CabecalhoONG();
                                     Console.WriteLine("Informe o CPF que do cliente que deseja alterar: ");
-                                    string Cpf = Console.ReadLine(); //verificar se o cpf existe no banco de dados.
-                                    Console.WriteLine("O que você deseja alterar do Cliente: \n[1]Nome \n[2]Sexo \n[3]Telefone \n[4]SiglaEstado");
-                                    int opc = int.Parse(Console.ReadLine());
-                                    while (opc < 1 || opc > 4)
+                                    string Cpf = Console.ReadLine();
+                                    if (new PessoaService().Exists(Cpf) == true)
                                     {
-                                        Console.WriteLine("Opção inválida, informe novamente: ");
-                                        opc = int.Parse(Console.ReadLine());
+                                        Console.WriteLine("O que você deseja alterar do Cliente: \n[1]Nome \n[2]Sexo \n[3]Telefone \n[4]Endereco ");
+                                        int opc = int.Parse(Console.ReadLine());
+                                        while (opc < 1 || opc > 4)
+                                        {
+                                            Console.WriteLine("Opção inválida, informe novamente: ");
+                                            opc = int.Parse(Console.ReadLine());
+                                        }
+                                        switch (opc)
+                                        {
+                                            case 1: //ok
+                                                #region Atualiza Nome
+                                                Console.WriteLine("Informe o novo nome: ");
+                                                string nome = Console.ReadLine();
+                                                new PessoaService().UpdateNome(nome, Cpf);
+                                                Console.WriteLine("### Atualização efetuada com sucesso! ###");
+                                                PressioneParaProsseguir();
+                                                #endregion
+                                                break;
+                                            case 2: //ok
+                                                #region Atualiza Sexo
+                                                Console.Write("Insira seu Sexo (M ou F): ");
+                                                string sexo = Console.ReadLine().ToUpper();
+                                                while (sexo != "M" && sexo != "F")
+                                                {
+                                                    Console.Write("Valor incorreto informado, informe novamente: ");
+                                                    sexo = Console.ReadLine().ToUpper();
+                                                }
+                                                new PessoaService().UpdateSexo(sexo, Cpf);
+                                                Console.WriteLine("### Atualização efetuada com sucesso! ###");
+                                                PressioneParaProsseguir();
+                                                #endregion
+                                                break;
+                                            case 3: //ok
+                                                #region Atualiza Telefone
+                                                Console.WriteLine("Informe o novo numero de Telefone: ");
+                                                string telefone = Console.ReadLine();
+                                                new PessoaService().UpdateTelefone(telefone,Cpf);
+                                                Console.WriteLine("### Atualização efetuada com sucesso! ###");
+                                                PressioneParaProsseguir();
+                                                #endregion
+                                                break;
+                                            case 4: //ok
+                                                #region atualiza estado
+                                                Console.Write("Insira seu novo Logradouro: ");
+                                                string logradouro = Console.ReadLine();
+                                                Console.Write("Insira seu novo bairro: ");
+                                                string bairro = Console.ReadLine();
+                                                Console.Write("Insira sua novo cidade: ");
+                                                string cidade = Console.ReadLine();
+                                                Console.Write("Insira a nova sigla do estado em que reside: ");
+                                                string siglaEstado = Console.ReadLine();
+                                                Console.Write("Insira o nvo numero da casa: ");
+                                                string numero = Console.ReadLine();
+                                                new PessoaService().UpdateEndereco(logradouro, bairro, cidade, siglaEstado, numero, Cpf);
+                                                Console.WriteLine("### Atualização efetuada com sucesso! ###");
+                                                PressioneParaProsseguir();
+                                                #endregion
+                                                break;
+                                            default:
+                                                Console.WriteLine("Erro de swicht!!");
+                                                break;
+                                        }
                                     }
-                                    switch (opc)
+                                    else
                                     {
-                                        case 1:
-                                            #region Atualiza Nome
-                                            Console.WriteLine("Informe o novo nome: ");
-                                            string nome = Console.ReadLine();
-                                            string sql = "update Pessoa set Nome = '" + nome + "' where CPF = '" + Cpf + "';";
-                                            // conexaoBD.AtualizarTabela(sql);
-                                            PressioneParaProsseguir();
-                                            #endregion
-                                            break;
-                                        case 2:
-                                            #region Atualiza Sexo
-                                            Console.Write("Insira seu Sexo (M ou F): ");
-                                            string sexo = Console.ReadLine().ToUpper();
-                                            while (sexo != "M" && sexo != "F")
-                                            {
-                                                Console.Write("Valor incorreto informado, informe novamente: ");
-                                                sexo = Console.ReadLine().ToUpper();
-                                            }
-                                            sql = "update Pessoa set Sexo = '" + sexo + "' where CPF = '" + Cpf + "';";
-                                            // conexaoBD.AtualizarTabela(sql);
-                                            PressioneParaProsseguir();
-                                            #endregion 
-                                            break;
-                                        case 3:
-                                            #region Atualiza Telefone
-                                            Console.WriteLine("Informe o novo numero de Telefone: ");
-                                            string telefone = Console.ReadLine();
-                                            sql = "update Pessoa set Telefone = '" + telefone + "' where CPF = '" + Cpf + "';";
-                                            //  conexaoBD.AtualizarTabela(sql);
-                                            PressioneParaProsseguir();
-                                            #endregion
-                                            break;
-                                        case 4:
-                                            #region atualiza estado
-                                            Console.WriteLine("Informe o nova sigla do estado: ");
-                                            string siglaEstado = Console.ReadLine();
-                                            sql = "update Pessoa set siglaEstado = '" + siglaEstado + "' where CPF = '" + Cpf + "';";
-                                            // conexaoBD.AtualizarTabela(sql);
-                                            PressioneParaProsseguir();
-                                            #endregion
-                                            break;
-                                        default:
-                                            Console.WriteLine("Erro de swicht!!");
-                                            break;
-                                    }
+                                        Console.WriteLine("Esse cpf é inválido ou nao esta cadastrado em nosso banco!!");
+                                        Console.WriteLine("Verifique isso e tente novamente depois!");
+                                        PressioneParaProsseguir();
+                                    }                               
                                     #endregion
                                     break;
                                 case 2:
@@ -286,13 +304,23 @@ namespace OngAdocoes2._0.View
                                 case 0:
                                     volta3 = true;
                                     break;
-                                case 1:
-                                    #region Select Tabela Pessoas
+                                case 1: //ok
+                                    #region Select geral Tabela Pessoas
                                     Console.Clear();
                                     CabecalhoONG();
                                     Console.WriteLine("Buscando registros...");
                                     Thread.Sleep(1000);
-                                    conexaoBD.SelectPessoa();
+                                    if(new PessoaService().SelectAll().Count == 0)
+                                    {
+                                        Console.WriteLine("Não possuem pessoas cadastradas em nosso sistema até o momento!!");
+                                        PressioneParaProsseguir();
+                                    }
+                                    else
+                                    {
+                                        new PessoaService().SelectAll().ForEach(x => Console.WriteLine(x));
+                                        Console.WriteLine("");
+                                        PressioneParaProsseguir();
+                                    }
                                     #endregion
                                     break;
                                 case 2:

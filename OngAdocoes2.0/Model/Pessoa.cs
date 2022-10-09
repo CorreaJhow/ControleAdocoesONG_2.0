@@ -6,6 +6,7 @@ namespace OngAdocoes2._0.Model
     public class Pessoa
     {
         #region Strings da classe
+        public readonly static string EXIST = "select Nome, CPF from Pessoa where CPF = @cpf";
         public readonly static string SELECT = "Select Nome, CPF, Sexo, DataNascimento, Telefone, Logradouro, Bairro, Cidade, SiglaEstado, Numero from Pessoa";
         public readonly static string DELETE = "Delete from Pessoa where CPF = @cpf";
         public readonly static string INSERT = "INSERT INTO PESSOA (Nome, CPF, Sexo, DataNascimento, Telefone, Logradouro, Bairro, Cidade, SiglaEstado, Numero) " +
@@ -14,6 +15,7 @@ namespace OngAdocoes2._0.Model
         public readonly static string UPDATECPF = "update Pessoa Set CPF = @cpf where cpf = @cpf;";
         public readonly static string UPDATEDATANASCIMENTO = "update Pessoa Set Datanascimento = @datanascimento where cpf = @cpf;";
         public readonly static string UPDATETELEFONE = "update Pessoa Set Telefone = @telefone where cpf = @cpf;";
+        public readonly static string UPDATESEXO = "update Pessoa Set Sexo = @sexo where cpf = @cpf;";
         public readonly static string UPDATEENDERECO = "update Pessoa Set Logradouro = @logradouro, Bairro = @bairro, Cidade = @cidade, SiglaEstado = @siglaestado, " +
                                                        "numero = @numero where cpf = @cpf;";
         #endregion
@@ -50,12 +52,10 @@ namespace OngAdocoes2._0.Model
         public override string ToString()
         {
             return
-                "\nNome: " + Nome +
-                "\nCPF: " + CPF +
-                "\nSexo: " + Sexo +
-                "\nData de Nascimento: " + DataNascimento +
-                "\nTelefone: " + Telefone +
-                "\nEstado: " + SiglaEstado;
+                "\nNome: " + Nome +" | Sexo: " + Sexo +" | Telefone: " + Telefone +
+                "\nData de Nascimento: " + DataNascimento.ToShortDateString() +" | CPF: " + CPF +
+                "\nCidade: " + Cidade +" | Estado: " + SiglaEstado +
+                "\nBairro: " + Bairro +" | Numero: " + Numero;
         }
     }
 }

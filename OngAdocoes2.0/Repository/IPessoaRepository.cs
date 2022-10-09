@@ -13,12 +13,11 @@ namespace OngAdocoes2._0.Repository
         public bool Exists(string cpf);
         public bool Insert(Pessoa pessoa);
         public void Delete(string cpf);
-        public void SelectOne(string cpf);
-        public void SelectAll(string cpf);
+        public List<Pessoa> SelectAll();
         public void UpdateNome(string nome,string cpf);
         public void UpdateTelefone(string telefone,string cpf);
-        public void UpdateDataNascimento(DateTime DataNascimento,string cpf);
-        public void UpdateEndereco(string logradouro, string bairro, string cidade, string siglaEstado, string numero);
+        public void UpdateEndereco(string logradouro, string bairro, string cidade, string siglaEstado, string numero, string cpf);
         public Pessoa CadastroPessoa();
+        public void UpdateSexo(string sexo, string cpf);
     }
 }

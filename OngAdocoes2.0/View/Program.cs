@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Threading;
+using OngAdocoes2._0.DataBase;
+using OngAdocoes2._0.Model;
+using OngAdocoes2._0.Service;
 
-namespace OngAdocoes2._0
+namespace OngAdocoes2._0.View
 {
     internal class Program
     {
@@ -13,7 +16,7 @@ namespace OngAdocoes2._0
         {
             do
             {
-               // ConBancoDados conexaoBD = new ConBancoDados(); //criar conexao com banco de dados.!
+                ConexaoBD conexaoBD = new ConexaoBD(); //criar conexao com banco de dados.!
                 Console.Clear();
                 CabecalhoONG();
                 Console.WriteLine("Bem vindo ao sistema de Adoções da nossa ONG");
@@ -51,14 +54,15 @@ namespace OngAdocoes2._0
                                 case 0:
                                     volta = true;
                                     break;
-                                case 1:
+                                case 1: //ok
                                     #region inserir pessoa             
                                     Console.Clear();
                                     CabecalhoONG();
-                                    Pessoa pessoa = new Pessoa();
-                                    pessoa = pessoa.CadastroPessoa();
-                                    conexaoBD.InserirPessoa(pessoa);
-                                    #endregion  
+                                    var pessoa = new PessoaService().CadastroPessoa();
+                                    new PessoaService().Insert(pessoa);
+                                    Console.WriteLine("### Pessoa inseria com sucesso! ####");
+                                    PressioneParaProsseguir();
+                                    #endregion   
                                     break;
                                 case 2:
                                     #region Inserir Animal
@@ -66,14 +70,14 @@ namespace OngAdocoes2._0
                                     CabecalhoONG();
                                     Animal animal = new Animal();
                                     animal = animal.CadastroAnimal();
-                                    conexaoBD.InserirAnimal(animal);
+                                    //conexaoBD.InserirAnimal(animal);
                                     #endregion                                  
                                     break;
                                 case 3:
                                     #region Inserir Registro Adoçao
                                     Console.Clear();
                                     CabecalhoONG();
-                                    conexaoBD.InserirAdocao();
+                                    //conexaoBD.InserirAdocao();
                                     #endregion
                                     break;
                                 default:
@@ -120,7 +124,7 @@ namespace OngAdocoes2._0
                                             Console.WriteLine("Informe o novo nome: ");
                                             string nome = Console.ReadLine();
                                             string sql = "update Pessoa set Nome = '" + nome + "' where CPF = '" + Cpf + "';";
-                                            conexaoBD.AtualizarTabela(sql);
+                                            // conexaoBD.AtualizarTabela(sql);
                                             PressioneParaProsseguir();
                                             #endregion
                                             break;
@@ -134,7 +138,7 @@ namespace OngAdocoes2._0
                                                 sexo = Console.ReadLine().ToUpper();
                                             }
                                             sql = "update Pessoa set Sexo = '" + sexo + "' where CPF = '" + Cpf + "';";
-                                            conexaoBD.AtualizarTabela(sql);
+                                            // conexaoBD.AtualizarTabela(sql);
                                             PressioneParaProsseguir();
                                             #endregion 
                                             break;
@@ -143,7 +147,7 @@ namespace OngAdocoes2._0
                                             Console.WriteLine("Informe o novo numero de Telefone: ");
                                             string telefone = Console.ReadLine();
                                             sql = "update Pessoa set Telefone = '" + telefone + "' where CPF = '" + Cpf + "';";
-                                            conexaoBD.AtualizarTabela(sql);
+                                            //  conexaoBD.AtualizarTabela(sql);
                                             PressioneParaProsseguir();
                                             #endregion
                                             break;
@@ -152,7 +156,7 @@ namespace OngAdocoes2._0
                                             Console.WriteLine("Informe o nova sigla do estado: ");
                                             string siglaEstado = Console.ReadLine();
                                             sql = "update Pessoa set siglaEstado = '" + siglaEstado + "' where CPF = '" + Cpf + "';";
-                                            conexaoBD.AtualizarTabela(sql);
+                                            // conexaoBD.AtualizarTabela(sql);
                                             PressioneParaProsseguir();
                                             #endregion
                                             break;
@@ -182,7 +186,7 @@ namespace OngAdocoes2._0
                                             Console.WriteLine("Informe a nova familia do animal: ");
                                             string familia = Console.ReadLine();
                                             string sql = "update Animal set Familia = '" + familia + "' where CHIP = '" + Chip + "';";
-                                            conexaoBD.AtualizarTabela(sql);
+                                            //  conexaoBD.AtualizarTabela(sql);
                                             PressioneParaProsseguir();
                                             #endregion
                                             break;
@@ -191,7 +195,7 @@ namespace OngAdocoes2._0
                                             Console.WriteLine("Informe a nova raça do animal: ");
                                             string raca = Console.ReadLine();
                                             sql = "update Animal set Raca = '" + raca + "' where CHIP = '" + Chip + "';";
-                                            conexaoBD.AtualizarTabela(sql);
+                                            //    conexaoBD.AtualizarTabela(sql);
                                             PressioneParaProsseguir();
                                             #endregion  
                                             break;
@@ -205,7 +209,7 @@ namespace OngAdocoes2._0
                                                 sexo = Console.ReadLine().ToUpper();
                                             }
                                             sql = "update Animal set Sexo = '" + sexo + "' where CHIP = '" + sexo + "';";
-                                            conexaoBD.AtualizarTabela(sql);
+                                            //      conexaoBD.AtualizarTabela(sql);
                                             PressioneParaProsseguir();
                                             #endregion
                                             break;
@@ -214,7 +218,7 @@ namespace OngAdocoes2._0
                                             Console.WriteLine("Informe o novo nome do animal: ");
                                             string nome = Console.ReadLine();
                                             sql = "update Animal set Nome = '" + nome + "' where CHIP = '" + Chip + "';";
-                                            conexaoBD.AtualizarTabela(sql);
+                                            //  conexaoBD.AtualizarTabela(sql);
                                             PressioneParaProsseguir();
                                             #endregion
                                             break;
@@ -243,14 +247,14 @@ namespace OngAdocoes2._0
                                             Console.WriteLine("Insira o CPF do novo Adotante: ");
                                             string novocpf = Console.ReadLine();
                                             string sql = "update RegistroAdocao set Adotante = '" + novocpf + "' where NumeroRegistro = " + numRegistro;
-                                            conexaoBD.AtualizarTabela(sql);
+                                            //    conexaoBD.AtualizarTabela(sql);
                                             PressioneParaProsseguir();
                                             break;
                                         case 2:
                                             Console.WriteLine("Insira o CHIP do novo Adotado: ");
                                             int novochip = int.Parse(Console.ReadLine());
                                             sql = "update RegistroAdocao set Adotado = " + novochip + " where NumeroRegistro = " + numRegistro;
-                                            conexaoBD.AtualizarTabela(sql);
+                                            //   conexaoBD.AtualizarTabela(sql);
                                             PressioneParaProsseguir();
                                             break;
                                         default:
@@ -288,8 +292,7 @@ namespace OngAdocoes2._0
                                     CabecalhoONG();
                                     Console.WriteLine("Buscando registros...");
                                     Thread.Sleep(1000);
-                                    string sql = "select Nome, Cpf, Sexo, Telefone, SiglaEstado, dataNascimento from pessoa;";
-                                    conexaoBD.SelectPessoa(sql);
+                                    conexaoBD.SelectPessoa();
                                     #endregion
                                     break;
                                 case 2:
@@ -298,8 +301,8 @@ namespace OngAdocoes2._0
                                     CabecalhoONG();
                                     Console.WriteLine("Buscando registros...");
                                     Thread.Sleep(1000);
-                                    sql = "select CHIP, Familia, Raca, Sexo, Nome from Animal;";
-                                    conexaoBD.SelectAnimal(sql);
+                                    string sql = "select CHIP, Familia, Raca, Sexo, Nome from Animal;";
+                                    //         conexaoBD.SelectAnimal(sql);
                                     #endregion
                                     break;
                                 case 3:
@@ -309,7 +312,7 @@ namespace OngAdocoes2._0
                                     Console.WriteLine("Buscando registros...");
                                     Thread.Sleep(1000);
                                     sql = "select NumeroRegistro, Adotante, Adotado from RegistroAdocao;";
-                                    conexaoBD.SelectAdocoes(sql);
+                                    //     conexaoBD.SelectAdocoes(sql);
                                     #endregion
                                     break;
                                 default:
@@ -337,4 +340,4 @@ namespace OngAdocoes2._0
         }
     }
 }
-}
+

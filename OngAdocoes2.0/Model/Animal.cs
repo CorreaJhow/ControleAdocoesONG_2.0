@@ -2,7 +2,7 @@
 using System.Linq;
 
 
-namespace OngAdocoes2._0
+namespace OngAdocoes2._0.Model
 {
     internal class Animal
     {
@@ -109,7 +109,7 @@ namespace OngAdocoes2._0
             return "\nNumero Identificação (CHIP): " + Chip +
                 "\nNome do animal: " + Nome +
                 "\nFamilia: " + Familia +
-                "\nRaca: " + Raca + 
+                "\nRaca: " + Raca +
                 "\nSexo: " + Sexo;
         }
     }

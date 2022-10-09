@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OngAdocoes2._0
+namespace OngAdocoes2._0.DataBase
 {
     internal interface IConexaoBD
     {

@@ -1,5 +1,0 @@
-{
-    "ConnectionStrings": {
-        "DefaultConnection": "Server=DESKTOP-IHETIF5;Database=ONG_Adocoes;Trusted_Connection=True;MultipleActiveResultSets=true"
-    }
-}

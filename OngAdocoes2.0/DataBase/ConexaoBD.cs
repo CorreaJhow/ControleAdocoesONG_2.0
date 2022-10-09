@@ -12,7 +12,7 @@ namespace OngAdocoes2._0.DataBase
 {
     internal class ConexaoBD : IConexaoBD
     {
-        private string _conexao;
+        private readonly string _conexao;
         public ConexaoBD()
         {
             _conexao = "Data Source=DESKTOP-IHETIF5; Initial Catalog=ONG_Adocoes; User Id=sa; Password=12345;";

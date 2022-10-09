@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using OngAdocoes2._0.DataBase;
 using OngAdocoes2._0.Model;
@@ -17,7 +18,7 @@ namespace OngAdocoes2._0.View
         {
             do
             {
-                ConexaoBD conexaoBD = new ConexaoBD(); //criar conexao com banco de dados.!
+                ConexaoBD conexaoBD = new ConexaoBD();
                 Console.Clear();
                 CabecalhoONG();
                 Console.WriteLine("Bem vindo ao sistema de Adoções da nossa ONG");
@@ -55,7 +56,7 @@ namespace OngAdocoes2._0.View
                                 case 0:
                                     volta = true;
                                     break;
-                                case 1: //ok
+                                case 1:
                                     #region inserir pessoa             
                                     Console.Clear();
                                     CabecalhoONG();
@@ -65,20 +66,21 @@ namespace OngAdocoes2._0.View
                                     PressioneParaProsseguir();
                                     #endregion   
                                     break;
-                                case 2:
+                                case 2: //ok
                                     #region Inserir Animal
                                     Console.Clear();
                                     CabecalhoONG();
-                                    Animal animal = new Animal();
-                                    animal = animal.CadastroAnimal();
-                                    //conexaoBD.InserirAnimal(animal);
+                                    Animal animal = new AnimalService().CadastroAnimal();
+                                    new AnimalService().Insert(animal);
+                                    Console.WriteLine("### Cadastro efetuado com Sucesso! ###");
+                                    PressioneParaProsseguir();
                                     #endregion                                  
                                     break;
                                 case 3:
                                     #region Inserir Registro Adoçao
                                     Console.Clear();
                                     CabecalhoONG();
-                                    //conexaoBD.InserirAdocao();
+                                    
                                     #endregion
                                     break;
                                 default:
@@ -149,7 +151,7 @@ namespace OngAdocoes2._0.View
                                                 #region Atualiza Telefone
                                                 Console.WriteLine("Informe o novo numero de Telefone: ");
                                                 string telefone = Console.ReadLine();
-                                                new PessoaService().UpdateTelefone(telefone,Cpf);
+                                                new PessoaService().UpdateTelefone(telefone, Cpf);
                                                 Console.WriteLine("### Atualização efetuada com sucesso! ###");
                                                 PressioneParaProsseguir();
                                                 #endregion
@@ -181,7 +183,7 @@ namespace OngAdocoes2._0.View
                                         Console.WriteLine("Esse cpf é inválido ou nao esta cadastrado em nosso banco!!");
                                         Console.WriteLine("Verifique isso e tente novamente depois!");
                                         PressioneParaProsseguir();
-                                    }                               
+                                    }
                                     #endregion
                                     break;
                                 case 2:
@@ -189,62 +191,70 @@ namespace OngAdocoes2._0.View
                                     Console.Clear();
                                     CabecalhoONG();
                                     Console.WriteLine("Informe o CHIP que do animal que deseja alterar o registro: ");
-                                    string Chip = Console.ReadLine(); //verificar se o chip existe no banco de dados.
-                                    Console.WriteLine("O que você deseja alterar do Animal: \n[1]Familia \n[2]Raca \n[3]Sexo \n[4]Nome");
-                                    int opcAnimal = int.Parse(Console.ReadLine());
-                                    while (opcAnimal < 1 || opcAnimal > 4)
+                                    int chip = int.Parse(Console.ReadLine());
+                                    if (new AnimalService().Exists(chip) == false)
                                     {
-                                        Console.WriteLine("Opção inválida, informe novamente: ");
-                                        opcAnimal = int.Parse(Console.ReadLine());
+                                        Console.WriteLine("Chip não encontrado em nosso banco de dados ou inválido!");
+                                        PressioneParaProsseguir();
                                     }
-                                    switch (opcAnimal)
+                                    else
                                     {
-                                        case 1:
-                                            #region Atualiza Familia Animal
-                                            Console.WriteLine("Informe a nova familia do animal: ");
-                                            string familia = Console.ReadLine();
-                                            string sql = "update Animal set Familia = '" + familia + "' where CHIP = '" + Chip + "';";
-                                            //  conexaoBD.AtualizarTabela(sql);
-                                            PressioneParaProsseguir();
-                                            #endregion
-                                            break;
-                                        case 2:
-                                            #region Atualiza Raca Animal 
-                                            Console.WriteLine("Informe a nova raça do animal: ");
-                                            string raca = Console.ReadLine();
-                                            sql = "update Animal set Raca = '" + raca + "' where CHIP = '" + Chip + "';";
-                                            //    conexaoBD.AtualizarTabela(sql);
-                                            PressioneParaProsseguir();
-                                            #endregion  
-                                            break;
-                                        case 3:
-                                            #region Atualiza Sexo Animal 
-                                            Console.Write("Insira o novo Sexo (M ou F): ");
-                                            string sexo = Console.ReadLine().ToUpper();
-                                            while (sexo != "M" && sexo != "F")
-                                            {
-                                                Console.Write("Valor incorreto informado, informe novamente: ");
-                                                sexo = Console.ReadLine().ToUpper();
-                                            }
-                                            sql = "update Animal set Sexo = '" + sexo + "' where CHIP = '" + sexo + "';";
-                                            //      conexaoBD.AtualizarTabela(sql);
-                                            PressioneParaProsseguir();
-                                            #endregion
-                                            break;
-                                        case 4:
-                                            #region Atualiza Nome Animal
-                                            Console.WriteLine("Informe o novo nome do animal: ");
-                                            string nome = Console.ReadLine();
-                                            sql = "update Animal set Nome = '" + nome + "' where CHIP = '" + Chip + "';";
-                                            //  conexaoBD.AtualizarTabela(sql);
-                                            PressioneParaProsseguir();
-                                            #endregion
-                                            break;
-                                        default:
-                                            Console.WriteLine("Erro de swicht!!");
-                                            break;
+                                        Console.WriteLine("O que você deseja alterar do Animal: \n[1]Familia \n[2]Raca \n[3]Sexo \n[4]Nome");
+                                        int opcAnimal = int.Parse(Console.ReadLine());
+                                        while (opcAnimal < 1 || opcAnimal > 4)
+                                        {
+                                            Console.WriteLine("Opção inválida, informe novamente: ");
+                                            opcAnimal = int.Parse(Console.ReadLine());
+                                        }
+                                        switch (opcAnimal)
+                                        {
+                                            case 1:
+                                                #region Atualiza Familia Animal
+                                                Console.WriteLine("Informe a nova familia do animal: ");
+                                                string familia = Console.ReadLine();
+                                                new AnimalService().UpdateFamilia(familia, chip);
+                                                Console.WriteLine("### Atualização realizada com sucesso! ###");
+                                                PressioneParaProsseguir();
+                                                #endregion
+                                                break;
+                                            case 2:
+                                                #region Atualiza Raca Animal 
+                                                Console.WriteLine("Informe a nova raça do animal: ");
+                                                string raca = Console.ReadLine();
+                                                new AnimalService().UpdateRaca(raca, chip);
+                                                Console.WriteLine("### Atualização realizada com sucesso! ###");
+                                                PressioneParaProsseguir();
+                                                #endregion
+                                                break;
+                                            case 3:
+                                                #region Atualiza Sexo Animal 
+                                                Console.Write("Insira o novo Sexo (M ou F): ");
+                                                string sexo = Console.ReadLine().ToUpper();
+                                                while (sexo != "M" && sexo != "F")
+                                                {
+                                                    Console.Write("Valor incorreto informado, informe novamente: ");
+                                                    sexo = Console.ReadLine().ToUpper();
+                                                }
+                                                new AnimalService().UpdateSexo(sexo, chip);
+                                                Console.WriteLine("### Atualização realizada com sucesso! ###");
+                                                PressioneParaProsseguir();
+                                                #endregion
+                                                break;
+                                            case 4:
+                                                #region Atualiza Nome Animal
+                                                Console.WriteLine("Informe o novo nome do animal: ");
+                                                string nome = Console.ReadLine();
+                                                new AnimalService().UpdateNome(nome, chip);
+                                                Console.WriteLine("### Atualização realizada com sucesso! ###");
+                                                PressioneParaProsseguir();
+                                                #endregion
+                                                break;
+                                            default:
+                                                Console.WriteLine("Erro de swicht!!");
+                                                break;
+                                        }
                                     }
-                                    #endregion 
+                                    #endregion
                                     break;
                                 case 3:
                                     #region Atualiza Registro Adocao
@@ -304,13 +314,13 @@ namespace OngAdocoes2._0.View
                                 case 0:
                                     volta3 = true;
                                     break;
-                                case 1: //ok
+                                case 1:
                                     #region Select geral Tabela Pessoas
                                     Console.Clear();
                                     CabecalhoONG();
                                     Console.WriteLine("Buscando registros...");
                                     Thread.Sleep(1000);
-                                    if(new PessoaService().SelectAll().Count == 0)
+                                    if (new PessoaService().SelectAll().Count == 0)
                                     {
                                         Console.WriteLine("Não possuem pessoas cadastradas em nosso sistema até o momento!!");
                                         PressioneParaProsseguir();
@@ -329,8 +339,9 @@ namespace OngAdocoes2._0.View
                                     CabecalhoONG();
                                     Console.WriteLine("Buscando registros...");
                                     Thread.Sleep(1000);
-                                    string sql = "select CHIP, Familia, Raca, Sexo, Nome from Animal;";
-                                    //         conexaoBD.SelectAnimal(sql);
+                                    new AnimalService().SelecAll().ForEach(x => Console.WriteLine(x));
+                                    Console.WriteLine("");
+                                    PressioneParaProsseguir();
                                     #endregion
                                     break;
                                 case 3:
@@ -339,7 +350,7 @@ namespace OngAdocoes2._0.View
                                     CabecalhoONG();
                                     Console.WriteLine("Buscando registros...");
                                     Thread.Sleep(1000);
-                                    sql = "select NumeroRegistro, Adotante, Adotado from RegistroAdocao;";
+                                    //sql = "select NumeroRegistro, Adotante, Adotado from RegistroAdocao;";
                                     //     conexaoBD.SelectAdocoes(sql);
                                     #endregion
                                     break;
@@ -365,6 +376,23 @@ namespace OngAdocoes2._0.View
             Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
             Console.WriteLine("                                                  ONG - Paraíso dos Animais");
             Console.WriteLine("------------------------------------------------------------------------------------------------------------------------");
+        }
+        public static int NumeroRandom()
+        {
+            Random rand = new Random();
+            int[] numero = new int[100];
+            int aux = 0;
+            for (int k = 0; k < numero.Length; k++)
+            {
+                int rnd = 0;
+                do
+                {
+                    rnd = rand.Next(100, 999);
+                } while (numero.Contains(rnd));
+                numero[k] = rnd;
+                aux = numero[k];
+            }
+            return aux;
         }
     }
 }

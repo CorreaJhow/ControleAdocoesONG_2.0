@@ -11,9 +11,9 @@ namespace OngAdocoes2._0.Repository
     {
         public Adocao CadastroAdocao();
         public bool Exist(int numeroRegistro);
-        public void Insert(int numeroRegistro, Pessoa pessoa, Animal animal);
-        public void SelectAll();
-        public void UpdateAdotante(Pessoa pessoa, int numeroRegistro);
-        public void UpdateAdotado(Animal animal, int numeroRegistro);
+        public void Insert(Adocao adocao);
+        public List<Adocao> SelectAll();
+        public void UpdateAdotante(string cpf, int numeroRegistro);
+        public void UpdateAdotado(int chip, int numeroRegistro);
     }
 }

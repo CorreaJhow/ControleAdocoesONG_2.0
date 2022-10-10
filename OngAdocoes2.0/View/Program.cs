@@ -66,7 +66,7 @@ namespace OngAdocoes2._0.View
                                     PressioneParaProsseguir();
                                     #endregion   
                                     break;
-                                case 2: //ok
+                                case 2:
                                     #region Inserir Animal
                                     Console.Clear();
                                     CabecalhoONG();
@@ -80,7 +80,11 @@ namespace OngAdocoes2._0.View
                                     #region Inserir Registro Adoçao
                                     Console.Clear();
                                     CabecalhoONG();
-                                    
+                                    var adocao = new AdocaoService().CadastroAdocao();
+                                    if (adocao != null)
+                                    {
+                                        new AdocaoService().Insert(adocao);
+                                    }
                                     #endregion
                                     break;
                                 default:
@@ -262,31 +266,55 @@ namespace OngAdocoes2._0.View
                                     CabecalhoONG();
                                     Console.WriteLine("Informe o numero de Registro que deseja alterar: ");
                                     int numRegistro = int.Parse(Console.ReadLine());
-                                    Console.WriteLine("O que deseja alterar do registro de adocoes: \n[1]Adotante (Pessoa) \n[2]Adotado (Animal)");
-                                    int op = int.Parse(Console.ReadLine());
-                                    while (op < 1 || op > 2)
+                                    if (new AdocaoService().Exist(numRegistro) == true)
                                     {
-                                        Console.WriteLine("Opção inválida, informe novamente: ");
-                                        op = int.Parse(Console.ReadLine());
+                                        Console.WriteLine("O que deseja alterar do registro de adocoes: \n[1]Adotante (Pessoa) \n[2]Adotado (Animal)");
+                                        int op = int.Parse(Console.ReadLine());
+                                        while (op < 1 || op > 2)
+                                        {
+                                            Console.WriteLine("Opção inválida, informe novamente: ");
+                                            op = int.Parse(Console.ReadLine());
+                                        }
+                                        switch (op)
+                                        {
+                                            case 1:
+                                                Console.WriteLine("Insira o CPF do novo Adotante: ");
+                                                string novocpf = Console.ReadLine();
+                                                if (new PessoaService().Exists(novocpf) == false)
+                                                {
+                                                    Console.WriteLine("Cpf nao cadastrado em nosso banco de dados, cadastre-o antes lá no meno de registro -> clientes!");
+                                                    PressioneParaProsseguir();
+                                                }
+                                                else
+                                                {
+                                                    new AdocaoService().UpdateAdotante(novocpf, numRegistro);
+                                                    Console.WriteLine("### Registro Atualizado com sucesso! ###");
+                                                    PressioneParaProsseguir();
+                                                }
+                                                break;
+                                            case 2:
+                                                Console.WriteLine("Insira o CHIP do novo Adotado: ");
+                                                int novochip = int.Parse(Console.ReadLine());
+                                                if (new AnimalService().Exists(novochip) == false)
+                                                {
+                                                    Console.WriteLine("CHIP nao cadastrado em nosso banco de dados, cadastre-o antes lá no meno de registro -> Animais!");
+                                                    PressioneParaProsseguir();
+                                                }
+                                                else
+                                                {
+                                                    new AdocaoService().UpdateAdotado(novochip, numRegistro);
+                                                    Console.WriteLine("### Registro Atualizado com sucesso! ###");
+                                                    PressioneParaProsseguir();
+                                                }                                              
+                                                break;
+                                            default:
+                                                break;
+                                        }
                                     }
-                                    switch (op)
+                                    else
                                     {
-                                        case 1:
-                                            Console.WriteLine("Insira o CPF do novo Adotante: ");
-                                            string novocpf = Console.ReadLine();
-                                            string sql = "update RegistroAdocao set Adotante = '" + novocpf + "' where NumeroRegistro = " + numRegistro;
-                                            //    conexaoBD.AtualizarTabela(sql);
-                                            PressioneParaProsseguir();
-                                            break;
-                                        case 2:
-                                            Console.WriteLine("Insira o CHIP do novo Adotado: ");
-                                            int novochip = int.Parse(Console.ReadLine());
-                                            sql = "update RegistroAdocao set Adotado = " + novochip + " where NumeroRegistro = " + numRegistro;
-                                            //   conexaoBD.AtualizarTabela(sql);
-                                            PressioneParaProsseguir();
-                                            break;
-                                        default:
-                                            break;
+                                        Console.WriteLine("Registro de adocao nao cadastrado em nosso banco de dados!!");
+                                        Program.PressioneParaProsseguir();
                                     }
                                     #endregion
                                     break;
@@ -350,8 +378,9 @@ namespace OngAdocoes2._0.View
                                     CabecalhoONG();
                                     Console.WriteLine("Buscando registros...");
                                     Thread.Sleep(1000);
-                                    //sql = "select NumeroRegistro, Adotante, Adotado from RegistroAdocao;";
-                                    //     conexaoBD.SelectAdocoes(sql);
+                                    new AdocaoService().SelectAll().ForEach(x => Console.WriteLine(x));
+                                    Console.WriteLine("");
+                                    PressioneParaProsseguir();
                                     #endregion
                                     break;
                                 default:
